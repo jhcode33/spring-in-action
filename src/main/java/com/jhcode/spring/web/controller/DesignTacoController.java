@@ -1,35 +1,37 @@
 package com.jhcode.spring.web.controller;
 
 import com.jhcode.spring.domain.Ingredient;
+import com.jhcode.spring.domain.Order;
 import com.jhcode.spring.domain.Taco;
 import com.jhcode.spring.repository.IngredientRepository;
+import com.jhcode.spring.repository.TacoRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import static com.jhcode.spring.domain.Ingredient.Type;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
 @RequestMapping("/design")
+@SessionAttributes("order")
 public class DesignTacoController {
 
     private final IngredientRepository ingredientRepo;
+    private final TacoRepository tacoRepository;
 
     @Autowired
-    public DesignTacoController(IngredientRepository ingredientRepo){
+    public DesignTacoController(IngredientRepository ingredientRepo, TacoRepository tacoRepository){
         this.ingredientRepo = ingredientRepo;
+        this.tacoRepository = tacoRepository;
     }
 
     @GetMapping
@@ -57,21 +59,33 @@ public class DesignTacoController {
         return "design";
     }
 
-    @PostMapping
-    public String processDesign(@Valid Taco design, Errors errors){
-        if (errors.hasErrors()){
-            return "design";
-        }
-
-        log.info("Processing design: " + design);
-        return "redirect:/orders/current";
-    }
-
     private Object filterByType(List<Ingredient> ingredients, Type type) {
         return ingredients
                 .stream()
                 .filter((pred) -> pred.getType().equals((type))) // Predicate의 test 메소드 구현
                 .collect(Collectors.toList());
+    }
+
+    @ModelAttribute(name = "order")
+    public Order order(){
+        return new Order();
+    }
+
+    @ModelAttribute(name = "taco")
+    public Taco taco(){
+        return new Taco();
+    }
+
+    @PostMapping
+    public String processDesign(@Valid Taco design, Errors errors, @ModelAttribute Order order){
+        if (errors.hasErrors()){
+            return "design";
+        }
+
+        Taco saved = tacoRepository.save(design);
+        order.addDesign(saved);
+
+        return "redirect:/orders/current";
     }
 
 

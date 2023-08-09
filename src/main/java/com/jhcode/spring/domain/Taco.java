@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 public class Taco {
-
+    // 타코 - 여러개의 식자재를 가짐
     private Long id;
     private Date createdAt;
 
@@ -19,5 +19,5 @@ public class Taco {
     private String name;
 
     @Size(min=1, message="You must choose at least 1 ingredient")
-    private List<String> ingredients;
+    private List<Ingredient> ingredients;
 }
