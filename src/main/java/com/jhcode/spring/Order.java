@@ -1,4 +1,4 @@
-package com.jhcode.spring.domain;
+package com.jhcode.spring;
 
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;

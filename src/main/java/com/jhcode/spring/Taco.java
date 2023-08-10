@@ -1,9 +1,8 @@
-package com.jhcode.spring.domain;
+package com.jhcode.spring;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.Singular;
 
 import java.util.Date;
 import java.util.List;
@@ -14,7 +13,7 @@ public class Taco {
     private Long id;
     private Date createdAt;
 
-    @NotNull
+    //@NotNull
     @Size(min=5, message="Name must be at least 5 characters long")
     private String name;
 

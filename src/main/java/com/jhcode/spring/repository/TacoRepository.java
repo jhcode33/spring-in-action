@@ -1,7 +1,7 @@
 package com.jhcode.spring.repository;
 
-import com.jhcode.spring.domain.Taco;
+import com.jhcode.spring.Taco;
 
 public interface TacoRepository {
-    Taco save(Taco taco);
+	Taco save(Taco design);
 }

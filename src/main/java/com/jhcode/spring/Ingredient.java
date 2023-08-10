@@ -1,4 +1,4 @@
-package com.jhcode.spring.domain;
+package com.jhcode.spring;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
