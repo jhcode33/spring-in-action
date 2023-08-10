@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+import java.util.OptionalInt;
+
 @Component
 public class IngredientByIdConverter
 		implements Converter<String, Ingredient> {
@@ -18,6 +21,7 @@ public class IngredientByIdConverter
 	
 	@Override
 	public Ingredient convert(String id) {
-		return ingredientRepo.findById(id);
+		Optional<Ingredient> optionalIngredient = ingredientRepo.findById(id);
+		return optionalIngredient.isPresent() ? optionalIngredient.get() : null;
 	}
 }
